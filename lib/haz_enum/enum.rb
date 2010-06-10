@@ -9,7 +9,7 @@ module HazEnum
         validate :#{enum_column}_check_for_valid_enum_value
         def #{enum_name}
           begin
-            return #{enum_class}.const_get(self[\"#{enum_column}\"]) if self[\"#{enum_column}\"]
+            return #{enum_class}.const_get(self["#{enum_column}"]) if self["#{enum_column}"]
             return nil
           rescue NameError => e
             return nil
@@ -17,19 +17,19 @@ module HazEnum
         end
       
         def #{enum_name}=(enum_to_set)
-          self[\"#{enum_column}\"] = enum_to_set.name
+          self["#{enum_column}"] = enum_to_set.name
         end
               
         def #{enum_name}_changed?
-          send(\"#{enum_column}_changed?\")
+          send("#{enum_column}_changed?")
         end
         
         def #{enum_column}_check_for_valid_enum_value
-          return true if self[\"#{enum_column}\"].nil?
+          return true if self["#{enum_column}"].nil?
           begin
-            enum_class.const_get(self[\"#{enum_column}\"])
+            #{enum_class}.const_get(self["#{enum_column}"])
           rescue NameError => e
-            self.errors.add(enum_column.to_sym, I18n.t("activerecord.errors.messages.enum_value_invalid", :value => self["#{enum_column}"], :name => "#{enum_name}"))
+            self.errors.add("#{enum_name}".to_sym, I18n.t("activerecord.errors.messages.enum_value_invalid", :value => self["#{enum_column}"], :name => "#{enum_name}"))
           end
         end
         
