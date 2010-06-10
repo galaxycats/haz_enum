@@ -14,4 +14,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2010 thyphoon. See LICENSE for details.
+Copyright (c) 2010 Galaxy Cats IT Consulting GmbH. See LICENSE for details.
