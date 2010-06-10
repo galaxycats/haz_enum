@@ -1,4 +1,3 @@
-require "active_record"
 require "haz_enum/enum"
 require "haz_enum/set"
 

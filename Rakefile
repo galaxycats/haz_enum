@@ -10,6 +10,7 @@ begin
     gem.email = "andi@galaxycats.com"
     gem.homepage = "http://github.com/galaxycats/haz_enum"
     gem.authors = ["thyphoon"]
+    gem.add_dependency "activerecord", ">= 3.0.0.beta3"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
