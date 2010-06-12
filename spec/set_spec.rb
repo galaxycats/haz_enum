@@ -41,7 +41,7 @@ describe "HazEnum" do
       roles_set.roles_changed?.should be(false)
     end
     
-    it "should bea able to add set-value" do
+    it "should be able to add set-value" do
       roles_set = ClassWithSet.new(:roles => [Roles::Admin])
       roles_set.save
       roles_set.roles << Roles::Supervisor
@@ -49,6 +49,11 @@ describe "HazEnum" do
       roles_set.reload
       roles_set.has_role?(Roles::Admin).should == true
       roles_set.has_role?(Roles::Supervisor).should == true
+    end
+    
+    it "should be able to define association methods" do
+      extended = ClassWithSet.new(:extended_roles => [Roles::Admin, Roles::Supervisor, Roles::User])
+      extended.to_s.should == "Admin, Supervisor, User"
     end
     
     after(:all) do

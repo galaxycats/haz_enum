@@ -29,7 +29,7 @@ def setup_db
 
       create_table :class_with_sets do |t|
         t.column :title, :string
-        t.column :roles_bitfield, :string
+        t.column :roles_bitfield, :integer
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end
@@ -68,6 +68,11 @@ end
 
 class ClassWithSet < ActiveRecord::Base
   has_set :roles
+  has_set :extended_roles, :class_name => :roles do
+    def to_s
+      extended_roles.collect(&:name).join(", ")
+    end
+  end
 end
 
 class ClassWithCustomNameSet < ActiveRecord::Base
