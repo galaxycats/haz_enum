@@ -20,18 +20,27 @@ def setup_db
         t.column :updated_at, :datetime
       end
 
-      create_table :class_without_enums do |t|
-        t.column :title, :string
-        t.column :created_at, :datetime
-        t.column :updated_at, :datetime
-      end
-
       create_table :class_with_custom_name_enums do |t|
         t.column :title, :string
         t.column :custom_name, :string
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end
+
+      create_table :class_with_sets do |t|
+        t.column :title, :string
+        t.column :roles_bitfield, :string
+        t.column :created_at, :datetime
+        t.column :updated_at, :datetime
+      end
+
+      create_table :class_with_custom_name_sets do |t|
+        t.column :title, :string
+        t.column :custom_name, :string
+        t.column :created_at, :datetime
+        t.column :updated_at, :datetime
+      end
+
     end
   end
 end
@@ -45,16 +54,24 @@ end
 enum :Fakes, [:NOT_DEFINIED]
 enum :Products, [:Silver, :Gold, :Titanium]
 
+enum :Roles, [:Admin, :Supervisor, :User]
+
 setup_db # Init the database for class creation
 
 class ClassWithEnum < ActiveRecord::Base
   has_enum :product
 end
 
-class ClassWithoutEnum < ActiveRecord::Base; end
-
 class ClassWithCustomNameEnum < ActiveRecord::Base
   has_enum :product, :column_name => :custom_name
+end
+
+class ClassWithSet < ActiveRecord::Base
+  has_set :roles
+end
+
+class ClassWithCustomNameSet < ActiveRecord::Base
+  has_set :roles, :column_name => :custom_name
 end
 
 teardown_db # And drop them right afterwards
