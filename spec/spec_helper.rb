@@ -15,7 +15,7 @@ def setup_db
     ActiveRecord::Schema.define(:version => 1) do
       create_table :class_with_enums do |t|
         t.column :title, :string
-        t.column :product_enum_value, :string
+        t.column :product, :string
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end

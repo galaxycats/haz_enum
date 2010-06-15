@@ -14,14 +14,16 @@ describe "HazEnum" do
   
     it "should be able to set enum-attribute via hash in initializer" do
       ClassWithEnum.new(:product => Products::Silver).product.should be(Products::Silver)
+      ClassWithCustomNameEnum.new(:product => Products::Silver).product.should be(Products::Silver)
     end
   
     it "should not be able to set enum-attribute by colum-name via hash in initializer" do
-      ClassWithEnum.new(:product_enum_value => Products::Silver.name).product.should_not be(Products::Silver)
+      ClassWithCustomNameEnum.new(:custom_name => Products::Silver).product.should_not be(Products::Silver)
+      ClassWithCustomNameEnum.new(:custom_name => Products::Silver.name).product.should_not be(Products::Silver)
     end
   
     it "should have a enum_value attribute" do
-      ClassWithEnum.new(:product => Products::Gold).product_enum_value.should be(Products::Gold.name)
+      ClassWithCustomNameEnum.new(:product => Products::Gold).custom_name.should be(Products::Gold.name)
     end
   
     it "colum_name should be configurable" do
