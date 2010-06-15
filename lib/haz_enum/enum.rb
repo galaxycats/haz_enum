@@ -30,7 +30,12 @@ module HazEnum
         begin
           enum_class.const_get(self["#{enum_column}"])
         rescue NameError => e
-          self.errors.add("#{enum_name}".to_sym, I18n.t("activerecord.errors.messages.enum_value_invalid", :value => self["#{enum_column}"], :name => enum_name))
+          
+          message = I18n.translate("activerecord.errors.models.#{self.class.name.underscore}.attributes.#{enum_name}.enum_value_invalid", :value => self["#{enum_column}"], :name => enum_name) ||
+                    I18n.translate("activerecord.errors.models.#{self.class.name.underscore}.enum_value_invalid", :value => self["#{enum_column}"], :name => enum_name) ||
+                    I18n.translate(:'activerecord.errors.messages.enum_value_invalid', :value => self["#{enum_column}"], :name => enum_name)
+          
+          self.errors.add(enum_name.to_sym, message)
         end
       end
     end
