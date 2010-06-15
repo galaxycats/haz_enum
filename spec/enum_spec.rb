@@ -17,6 +17,10 @@ describe "HazEnum" do
       ClassWithCustomNameEnum.new(:product => Products::Silver).product.should be(Products::Silver)
     end
     
+    it "should be able to set enum-value as string in initializer" do
+      ClassWithEnum.new(:product => "Silver").product.should be(Products::Silver)
+    end
+    
     it "should not be able to set enum-attribute by colum-name via hash in initializer" do
       ClassWithCustomNameEnum.new(:custom_name => Products::Silver).product.should_not be(Products::Silver)
       ClassWithCustomNameEnum.new(:custom_name => Products::Silver.name).product.should_not be(Products::Silver)
@@ -27,7 +31,7 @@ describe "HazEnum" do
     end
     
     it "colum_name should be configurable" do
-      ClassWithCustomNameEnum.new(:product => Products::Gold).custom_name.should be(Products::Gold.name)
+      ClassWithCustomNameEnum.new(:product => Products::Gold).product.should be(Products::Gold)
     end
     
     it "should know if enum-attribute has changed" do

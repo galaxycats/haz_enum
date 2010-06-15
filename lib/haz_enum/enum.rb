@@ -18,7 +18,11 @@ module HazEnum
       end
       
       define_method "#{enum_name}=" do |enum_to_set|
-        self["#{enum_column}"] = enum_to_set.name
+        if enum_to_set.respond_to?(:name)
+          self["#{enum_column}"] = enum_to_set.name
+        else
+          self["#{enum_column}"] = enum_class.const_get(enum_to_set).name
+        end
       end
       
       define_method "#{enum_name}_changed?" do
