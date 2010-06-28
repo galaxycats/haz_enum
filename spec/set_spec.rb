@@ -17,6 +17,13 @@ describe "HazEnum" do
       ClassWithSet.new(:roles => [Roles::User, Roles::Admin]).roles[1].should be(Roles::Admin)
     end
     
+    it "should be able to save values as yml" do
+      YmlSet.new(:roles => [Roles::User, Roles::Admin]).roles[1].should be(Roles::Admin)
+      yml_set = YmlSet.create(:roles => [Roles::User, Roles::Admin])
+      yml_set.reload
+      yml_set.roles[1].should be(Roles::Admin)
+    end
+    
     it "should not be able to set set-values by colum-name via hash in initializer" do
       lambda { ClassWithEnum.new(:roles_bitfield => 3) }.should raise_error
     end

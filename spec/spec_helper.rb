@@ -30,6 +30,7 @@ def setup_db
       create_table :class_with_sets do |t|
         t.column :title, :string
         t.column :roles_bitfield, :integer
+        t.column :roles_yml, :text
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end
@@ -73,6 +74,11 @@ class ClassWithSet < ActiveRecord::Base
       extended_roles.collect(&:name).join(", ")
     end
   end
+end
+
+class YmlSet < ActiveRecord::Base
+  set_table_name "class_with_sets"
+  has_set :roles, :field_type => :yml
 end
 
 class ClassWithCustomNameSet < ActiveRecord::Base
