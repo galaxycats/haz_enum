@@ -14,6 +14,7 @@ module HazEnum
       end
       
       define_method("#{set_name}=") do |value|
+        value.constantize rescue value if value.is_a?(String)
         class <<value
           yield if block_given?
         end
