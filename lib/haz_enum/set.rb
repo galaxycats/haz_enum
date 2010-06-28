@@ -10,7 +10,7 @@ module HazEnum
       before_save "convert_#{set_name}_to_#{field_type}"
       
       define_method("#{set_name}") do
-        instance_variable_get("@#{set_name}") || []
+        instance_variable_get("@#{set_name}")
       end
       
       define_method("#{set_name}=") do |value|
@@ -67,7 +67,7 @@ module HazEnum
           deserialized_value =  unless self[set_column].is_a?(String) && self[set_column] =~ /^---/
             self[set_column]
           else
-            YAML::load(self[set_column]) rescue self[set_column]
+            (YAML::load(self[set_column]) || []) rescue self[set_column]
           end
           send("#{set_name}=", deserialized_value)
         end
