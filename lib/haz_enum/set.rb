@@ -4,7 +4,7 @@ module HazEnum
       
       field_type = options.has_key?(:field_type) ? options[:field_type].to_s : "bitfield"
       set_column = options.has_key?(:column_name) ? options[:column_name].to_s : "#{set_name}_#{field_type}"
-      enum_class = options.has_key?(:class_name) ? Object.const_get(options[:class_name].to_s.camelize) : Object.const_get(set_name.to_s.camelize)
+      enum_class = options.has_key?(:class_name) ? options[:class_name].to_s.camelize.constantize : set_name.to_s.camelize.constantize
       
       after_find "initialize_#{set_name}_from_bitfield"
       before_save "convert_#{set_name}_to_bitfield"
