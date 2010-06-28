@@ -10,7 +10,7 @@ module HazEnum
       before_save "convert_#{set_name}_to_#{field_type}"
       
       define_method("#{set_name}") do
-        instance_variable_get("@#{set_name}")
+        instance_variable_get("@#{set_name}") || instance_variable_set("@#{set_name}", [])
       end
       
       define_method("#{set_name}=") do |value|
