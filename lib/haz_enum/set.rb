@@ -71,7 +71,7 @@ module HazEnum
         end
 
         define_method("initialize_#{set_name}_from_yml") do
-          deserialized_value = (YAML::load(self[set_column]) || [])
+          deserialized_value = (YAML::load(self[set_column] || "--- \n") || [])
           send("#{set_name}=", deserialized_value)
         end
         

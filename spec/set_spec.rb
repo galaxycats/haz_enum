@@ -17,6 +17,10 @@ describe "HazEnum" do
       ClassWithSet.new(:roles => [Roles::User, Roles::Admin]).roles[1].should be(Roles::Admin)
     end
     
+    it "should have empty array as default-value" do
+      ClassWithSet.new.roles.should == []
+    end
+    
     it "should be able to save values as yml" do
       YmlSet.new(:roles => [Roles::User, Roles::Admin]).roles[1].should be(Roles::Admin)
       yml_set = YmlSet.create(:roles => [Roles::User, Roles::Admin])
