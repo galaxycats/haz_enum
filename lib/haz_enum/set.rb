@@ -5,17 +5,22 @@ module HazEnum
       field_type = options.has_key?(:field_type) ? options[:field_type].to_s : "bitfield"
       set_column = options.has_key?(:column_name) ? options[:column_name].to_s : "#{set_name}_#{field_type}"
       enum_class = options.has_key?(:class_name) ? options[:class_name].to_s.camelize.constantize : set_name.to_s.camelize.constantize
+      separator = options.has_key?(:separator) ? options[:separator].to_s : ", "
       
       after_find "initialize_#{set_name}_from_#{field_type}"
       before_save "convert_#{set_name}_to_#{field_type}"
       
       define_method("#{set_name}") do
-        instance_variable_get("@#{set_name}") || instance_variable_set("@#{set_name}", [])
+        instance_variable_get("@#{set_name}") || "initialize_#{set_name}_from_#{field_type}"
       end
       
       define_method("#{set_name}=") do |value|
-        value.constantize rescue value if value.is_a?(String)
+        value.collect! { |val| val.is_a?(String) ? val.constantize : val }.compact! if value.is_a?(Array)
+        value.instance_variable_set("@separator", separator)
         class <<value
+          define_method :to_s do
+            self.join(@separator)
+          end
           yield if block_given?
         end
         instance_variable_set("@#{set_name}", value)
@@ -40,7 +45,7 @@ module HazEnum
         
         define_method("convert_#{set_name}_to_bitfield") do
           self[set_column] = 0
-          if send(set_name)
+          unless send(set_name).blank?
             send(set_name).each do |element|
               2**element.bitfield_index & self[set_column] == 2**element.bitfield_index ? next : self[set_column] += 2**element.bitfield_index
             end
@@ -55,6 +60,7 @@ module HazEnum
             send("#{set_name}=", set_elements)
           else
             self[set_column] = 0
+            send("#{set_name}=", [])
           end
         end
 
@@ -65,11 +71,7 @@ module HazEnum
         end
 
         define_method("initialize_#{set_name}_from_yml") do
-          deserialized_value =  unless self[set_column].is_a?(String) && self[set_column] =~ /^---/
-            self[set_column]
-          else
-            (YAML::load(self[set_column]) || []) rescue self[set_column]
-          end
+          deserialized_value = (YAML::load(self[set_column]) || [])
           send("#{set_name}=", deserialized_value)
         end
         
