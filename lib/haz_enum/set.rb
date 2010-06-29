@@ -18,8 +18,10 @@ module HazEnum
         value.collect! { |val| val.is_a?(String) ? val.constantize : val }.compact! if value.is_a?(Array)
         value.instance_variable_set("@separator", separator)
         class <<value
-          define_method :to_s do
-            self.join(@separator)
+          define_method :human do
+            self.collect do |enum|
+              enum.respond_to?(:model_name) ? enum.model_name.human : enum.name
+            end.join(@separator)
           end
           yield if block_given?
         end
