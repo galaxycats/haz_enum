@@ -65,6 +65,11 @@ describe "HazEnum" do
       enum_mixin.errors[:product].size.should > 0
     end
     
+    it "should work without renum (just ruby module with classes)" do
+      role_enum = ClassWithEnum.new(:module_role => ModuleRoles::Admin)
+      role_enum.has_module_role?(ModuleRoles::Admin).should == true
+    end
+    
     after(:all) do
       teardown_db
     end

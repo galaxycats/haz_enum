@@ -56,6 +56,12 @@ enum :Fakes, [:NOT_DEFINIED]
 enum :Products, [:Silver, :Gold, :Titanium]
 enum :Roles, [:Admin, :Supervisor, :User]
 
+module ModuleRoles
+  class Admin; def self.name; "Admin"; end; end
+  class Supervisor; def self.name; "Supervisor"; end; end
+  class ContentManager; def self.name; "ContentManager"; end; end
+end
+
 module ModuleBitfieldRoles
   class Admin
     def self.bitfield_index; 1; end
@@ -68,7 +74,7 @@ module ModuleBitfieldRoles
   end
   class <<self
     def values
-      [Admin, Supervisor, ContentManager]
+      ModuleBitfieldRoles.constants.collect { |c| ModuleBitfieldRoles.const_get(c) }
     end
   end
 end
@@ -77,6 +83,7 @@ setup_db # Init the database for class creation
 
 class ClassWithEnum < ActiveRecord::Base
   has_enum :product
+  has_enum :module_role
 end
 
 class ClassWithCustomNameEnum < ActiveRecord::Base
@@ -90,6 +97,7 @@ class ClassWithSet < ActiveRecord::Base
       extended_roles.collect(&:name).join(", ")
     end
   end
+  has_set :module_roles
   has_set :module_bitfield_roles, :field_type => :bitfield
 end
 
