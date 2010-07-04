@@ -15,6 +15,7 @@ module HazEnum
       end
       
       define_method("#{set_name}=") do |value|
+        value = [value].flatten
         value.collect! { |val| val.is_a?(String) ? val.constantize : val }.compact! if value.is_a?(Array)
         value.instance_variable_set("@separator", separator)
         class <<value
