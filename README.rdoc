@@ -1,6 +1,108 @@
 = haz_enum
 
-Description goes here.
+haz_enum is a ActiveRecord extension to allow associations to enumerations.  
+
+== Installation
+  
+haz_enum is hostet on rubygems.org, so yoou can just do
+  
+  gem install haz_enum
+  
+or if you use bundler, just add the following line to your Gemfile:
+  
+  gem "haz_enum"
+  
+
+== Example with renum
+
+renum is a perfect library for enumerations in ruby (see http://github.com/duelinmarkers/renum). Here is a simple renum definition:
+
+  enum :Roles do
+    Admin()
+    Supervisor()
+    ContentManager()
+  end
+
+in your AR-model you can now write
+
+  class User < ActiveRecord
+    has_enum :role
+  end
+
+what you need is a column in your db named <code>role</code> with type <code>string</code>.
+
+  user = User.create(:role => Roles::Admin)
+  user.has_role?(Roles::Admin) => true
+  user.has_role?(Roles::Supervisor) => false
+  
+The example above realizes one role per user. But what if you want to have multiple Roles per user? Just change <code>has_enum</code> to <code>has_set</code> and rename the column to <code>roles</code>:
+  
+  class User < ActiveRecord
+    has_set :roles
+  end
+
+  user = User.create(:roles => Roles::Admin)
+  user.has_role?(Roles::Admin) => true
+  user.has_role?(Roles::Supervisor) => false
+
+or
+  
+  user = User.create(:roles => [Roles::Admin, Roles::Supervisor])
+  user.has_role?(Roles::Admin) => true
+  user.has_role?(Roles::Supervisor) => true
+  
+now <code>roles</code> behaves just like an array, so you can also do
+
+  user = User.create(:roles => Roles::Admin)
+  user.roles << Roles::Supervisor
+  user.has_role?(Roles::Admin) => true
+  user.has_role?(Roles::Supervisor) => true
+
+== Using bitfields
+
+If you have an enum with many possible values you can switch from :yml to field_type :bitfield. 
+
+  class User < ActiveRecord
+    has_set :roles, :field_type => :bitfield
+  end
+
+Your db-column has to be an integer for field_type bitfield. If you use mysql with int(11) you are able to have up to 64 different values in your enumeration.
+
+== You do not need renum
+
+...but it really makes sense to use this library. If you really do not want to use it you have to implement against an interface. Here is a simple ruby module example to get the same results as above for has_enum:
+
+  module Roles
+    class Admin; def self.name; "Admin"; end; end
+    class Supervisor; def self.name; "Supervisor"; end; end
+    class ContentManager; def self.name; "ContentManager"; end; end
+  end
+
+You cannot use this for <code>has_set</code> and <code>field_type :yml</code> since you cannot dump anonymous classes. But you can use <code>field_type :bitfield</code>. Then your class could look something like that:
+
+  module Roles
+    class Admin
+      def self.bitfield_index; 1; end
+    end
+    class Supervisor
+      def self.bitfield_index; 2; end
+    end
+    class ContentManager
+      def self.bitfield_index; 3; end
+    end
+    class <<self
+      def values
+        Roles.constants.collect { |c| Roles.const_get(c) }
+      end
+    end
+  end
+
+As you can see, your classes have to respond to <code>bitfield_index</code> and your wrapping module has to respond to values and return all available classes. So now you could do:
+
+  class User < ActiveRecord
+    has_enum :role, :field_type => :bitfield
+  end
+
 
 == Note on Patches/Pull Requests
  
