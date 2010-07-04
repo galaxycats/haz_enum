@@ -21,6 +21,12 @@ describe "HazEnum" do
       ClassWithEnum.new(:product => "Silver").product.should be(Products::Silver)
     end
     
+    it "should have has_<association>? method" do
+      class_with_enum = ClassWithEnum.new(:product => "Silver")
+      class_with_enum.has_product?(Products::Silver).should == true
+      class_with_enum.has_product?(Products::Gold).should == false
+    end
+    
     it "should not be able to set enum-attribute by colum-name via hash in initializer" do
       ClassWithCustomNameEnum.new(:custom_name => Products::Silver).product.should_not be(Products::Silver)
       ClassWithCustomNameEnum.new(:custom_name => Products::Silver.name).product.should_not be(Products::Silver)

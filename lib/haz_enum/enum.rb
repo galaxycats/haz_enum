@@ -25,6 +25,10 @@ module HazEnum
         end
       end
       
+      define_method "has_#{enum_name}?" do |enum|
+        send(enum_name) == enum
+      end
+      
       define_method "#{enum_name}_changed?" do
         send("#{enum_column}_changed?")
       end if enum_name != enum_column
