@@ -73,6 +73,26 @@ describe "HazEnum" do
       extended.to_s.should == "Admin, Supervisor, User"
     end
     
+    it "should be able to work without renum" do
+      roles_set = ClassWithSet.new(:no_renum_roles => [NoRenumRoles.admin, NoRenumRoles.supervisor])
+      roles_set.has_no_renum_role?(NoRenumRoles.admin).should == true
+      roles_set.has_no_renum_role?(NoRenumRoles.supervisor).should == true
+      roles_set.save
+      roles_set.reload
+      roles_set.has_no_renum_role?(NoRenumRoles.admin).should == true
+      roles_set.has_no_renum_role?(NoRenumRoles.supervisor).should == true
+    end
+    
+    it "should be able to work without renum and bitfield" do
+      roles_set = ClassWithSet.new(:module_bitfield_roles => [ModuleBitfieldRoles::Admin, ModuleBitfieldRoles::Supervisor])
+      roles_set.has_module_bitfield_role?(ModuleBitfieldRoles::Admin).should == true
+      roles_set.has_module_bitfield_role?(ModuleBitfieldRoles::Supervisor).should == true
+      roles_set.save
+      roles_set.reload
+      roles_set.has_module_bitfield_role?(ModuleBitfieldRoles::Admin).should == true
+      roles_set.has_module_bitfield_role?(ModuleBitfieldRoles::Supervisor).should == true
+    end
+    
     after(:all) do
       teardown_db
     end

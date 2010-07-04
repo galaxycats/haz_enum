@@ -54,8 +54,44 @@ end
 
 enum :Fakes, [:NOT_DEFINIED]
 enum :Products, [:Silver, :Gold, :Titanium]
-
 enum :Roles, [:Admin, :Supervisor, :User]
+
+class NoRenumRoles
+  attr_accessor :name
+  def initialize(attributes)
+    attributes.symbolize_keys!
+    @name = attributes[:name] 
+  end
+  def self.admin
+    self.new(:name => "Admin")
+  end
+  def self.supervisor
+    self.new(:name => "Supervisor")
+  end
+  def self.content_manager
+    self.new(:name => "ContentManager")
+  end
+  def ==(other)
+    self.name == other.name
+  end
+end
+
+module ModuleBitfieldRoles
+  class Admin
+    def self.bitfield_index; 1; end
+  end
+  class Supervisor
+    def self.bitfield_index; 2; end
+  end
+  class ContentManager
+    def self.bitfield_index; 3; end
+  end
+  class <<self
+    def values
+      [Admin, Supervisor, ContentManager]
+    end
+  end
+end
 
 setup_db # Init the database for class creation
 
@@ -74,6 +110,8 @@ class ClassWithSet < ActiveRecord::Base
       extended_roles.collect(&:name).join(", ")
     end
   end
+  has_set :no_renum_roles
+  has_set :module_bitfield_roles, :field_type => :bitfield
 end
 
 class YmlSet < ActiveRecord::Base
