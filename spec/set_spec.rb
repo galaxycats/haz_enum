@@ -21,6 +21,12 @@ describe "HazEnum" do
       ClassWithSet.new.roles.should == []
     end
     
+    it "should have has_<association>? method" do
+      class_with_enum = ClassWithSet.new(:roles => Roles::Admin)
+      class_with_enum.has_role?(Roles::Admin).should == true
+      class_with_enum.has_role?(Roles::User).should == false
+    end
+    
     it "should be able to save values as yml" do
       YmlSet.new(:roles => [Roles::User, Roles::Admin]).roles[1].should be(Roles::Admin)
       yml_set = YmlSet.create(:roles => [Roles::User, Roles::Admin])
