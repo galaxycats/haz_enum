@@ -2,7 +2,7 @@ module HazEnum
   module Set
     def has_set(set_name, options={})
       
-      field_type = options.has_key?(:field_type) ? options[:field_type].to_s : "bitfield"
+      field_type = options.has_key?(:field_type) ? options[:field_type].to_s : "yml"
       set_column = options.has_key?(:column_name) ? options[:column_name].to_s : "#{set_name}_#{field_type}"
       enum_class = options.has_key?(:class_name) ? options[:class_name].to_s.camelize.constantize : set_name.to_s.camelize.constantize
       separator = options.has_key?(:separator) ? options[:separator].to_s : ", "
