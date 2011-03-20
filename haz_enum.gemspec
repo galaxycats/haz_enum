@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{haz_enum}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["thyphoon"]
-  s.date = %q{2010-09-16}
+  s.date = %q{2011-03-20}
   s.description = %q{use has_set and has_enum in your ActiveRecord models if you want to have one (has_enum) value from a defined enumeration or more (has_set))}
   s.email = %q{andi@galaxycats.com}
   s.extra_rdoc_files = [
