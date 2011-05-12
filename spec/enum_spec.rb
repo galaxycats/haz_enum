@@ -70,6 +70,11 @@ describe "HazEnum" do
       role_enum.has_module_role?(ModuleRoles::Admin).should == true
     end
     
+    it "should handle blank parameter of setter" do
+      ClassWithEnum.new(:product => nil).product.should be_nil
+      ClassWithEnum.new(:product => "").product.should be_nil
+    end
+    
     after(:all) do
       teardown_db
     end
