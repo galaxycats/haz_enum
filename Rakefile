@@ -1,24 +1,6 @@
 require 'rubygems'
+require "bundler"
 require 'rake'
-
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "haz_enum"
-    gem.summary = %Q{has_set and has_enum for ActiveRecord}
-    gem.description = %Q{use has_set and has_enum in your ActiveRecord models if you want to have one (has_enum) value from a defined enumeration or more (has_set))}
-    gem.email = "andi@galaxycats.com"
-    gem.homepage = "http://github.com/galaxycats/haz_enum"
-    gem.authors = ["thyphoon"]
-    gem.add_dependency "activerecord", ">= 2.3.0"
-    gem.add_development_dependency "rspec", "~> 1.3.0"
-    gem.add_development_dependency "renum", "~> 1.3.1"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
-end
 
 require 'spec/rake/spectask'
 Spec::Rake::SpecTask.new(:spec) do |spec|
@@ -31,8 +13,6 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
 end
-
-task :spec => :check_dependencies
 
 task :default => :spec
 
