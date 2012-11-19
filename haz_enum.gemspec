@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
+require File.join(File.dirname(__FILE__), *%w[lib version])
 
 Gem::Specification.new do |s|
   s.name = %q{haz_enum}
-  s.version = "0.5.4"
+  s.version = HazEnum::VERSION
   s.platform = Gem::Platform::RUBY
   s.rubyforge_project = "haz_enum"
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
