@@ -24,9 +24,9 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -- spec/*`.split("\n")
 
   s.add_runtime_dependency(%q<activerecord>, [">= 2.3.0"])
-  s.add_development_dependency(%q<rspec>, ["~> 1.3.0"])
+  s.add_development_dependency(%q<rspec>, ["~> 2.12.0"])
   s.add_development_dependency(%q<renum>, ["~> 1.3.1"])
-  s.add_development_dependency(%q<rake>, ["~> 0.9"])
+  s.add_development_dependency(%q<rake>, ["~> 10.0.3"])
   s.add_development_dependency(%q<sqlite3>, ["~> 1.3"])
 end
 

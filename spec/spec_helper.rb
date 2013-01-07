@@ -4,8 +4,6 @@ require "rubygems"
 require "active_record"
 require 'renum'
 require 'haz_enum'
-require 'spec'
-require 'spec/autorun'
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 ActiveRecord::Migration.verbose = false
@@ -16,6 +14,7 @@ def setup_db
       create_table :class_with_enums do |t|
         t.column :title, :string
         t.column :product, :string
+        t.column :module_role, :string
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end
@@ -31,6 +30,9 @@ def setup_db
         t.column :title, :string
         t.column :roles_bitfield, :integer
         t.column :roles_yml, :text
+        t.column :module_roles_yml, :text
+        t.column :extended_roles_yml, :text
+        t.column :module_bitfield_roles_bitfield, :integer
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end
@@ -102,7 +104,7 @@ class ClassWithSet < ActiveRecord::Base
 end
 
 class YmlSet < ActiveRecord::Base
-  set_table_name "class_with_sets"
+  self.table_name = "class_with_sets"
   has_set :roles, :field_type => :yml
 end
 
@@ -111,7 +113,3 @@ class ClassWithCustomNameSet < ActiveRecord::Base
 end
 
 teardown_db # And drop them right afterwards
-
-Spec::Runner.configure do |config|
-  
-end
