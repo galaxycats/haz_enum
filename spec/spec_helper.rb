@@ -29,6 +29,7 @@ def setup_db
       create_table :class_with_custom_name_fields do |t|
         t.column :title, :string
         t.column :main_product, :string
+        t.column :sub_product, :string
         t.column :created_at, :datetime
         t.column :updated_at, :datetime
       end
@@ -101,6 +102,7 @@ end
 
 class ClassWithCustomNameField < ActiveRecord::Base
   has_enum :main_product, :class_name => "Products"
+  has_enum :sub_product, :enum => Products
 end
 
 class ClassWithSet < ActiveRecord::Base

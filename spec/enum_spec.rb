@@ -75,11 +75,18 @@ describe "HazEnum" do
       ClassWithEnum.new(:product => "").product.should be_nil
     end
 
-    it "should be able to set the enum class manually" do
+    it "should be able to set the class_name manually" do
       main_product_enum = ClassWithCustomNameField.new(:main_product => Products::Silver)
       main_product_enum.main_product.should == Products::Silver
       main_product_enum.save
-      ClassWithCustomNameField.first.main_product.should == Products::Silver
+      ClassWithCustomNameField.find(main_product_enum.id).main_product.should == Products::Silver
+    end
+
+    it "should be able to set the enum class manually" do
+      sub_product_enum = ClassWithCustomNameField.new(:sub_product => Products::Gold)
+      sub_product_enum.sub_product.should == Products::Gold
+      sub_product_enum.save
+      ClassWithCustomNameField.find(sub_product_enum.id).sub_product.should == Products::Gold
     end
 
     after(:all) do

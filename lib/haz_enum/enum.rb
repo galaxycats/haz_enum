@@ -3,7 +3,13 @@ module HazEnum
     def has_enum(enum_name, options={})
       enum_name = enum_name.to_s
       enum_column = options.has_key?(:column_name) ? options[:column_name].to_s : enum_name
-      enum_class = options.has_key?(:class_name) ? options[:class_name].constantize : enum_name.pluralize.camelize.constantize
+      enum_class = if options.has_key?(:class_name)
+        options[:class_name].constantize
+      elsif options[:enum]
+        options[:enum]
+      else
+        enum_name.pluralize.camelize.constantize
+      end
 
       self.attr_protected("#{enum_column}") if enum_name != enum_column
       self.validate "#{enum_column}_check_for_valid_enum_value"
