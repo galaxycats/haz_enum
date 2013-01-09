@@ -21,6 +21,11 @@ describe "HazEnum" do
       ClassWithEnum.new(:product => "Silver").product.should be(Products::Silver)
     end
 
+    it "should be transparent for validations" do
+      object = ClassWithEnum.new
+      object.save.should be_false
+    end
+
     it "should have has_<association>? method" do
       class_with_enum = ClassWithEnum.new(:product => "Silver")
       class_with_enum.has_product?(Products::Silver).should == true

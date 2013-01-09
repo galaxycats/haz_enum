@@ -94,6 +94,8 @@ setup_db # Init the database for class creation
 class ClassWithEnum < ActiveRecord::Base
   has_enum :product
   has_enum :module_role
+
+  validates :product, presence: true
 end
 
 class ClassWithCustomNameEnum < ActiveRecord::Base
